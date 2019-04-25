@@ -1,0 +1,100 @@
+type Query {
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
+    comments(query: String): [Comment!]!
+    me: User!
+    helloworld: String!
+}
+
+type Mutation {
+    addUser(data: AddUserInput!): User!
+    removeUser(id: ID!): User!
+    updateUser(id: ID!, data: UpdateUserInput!): User!
+    addPost(data: AddPostInput): Post!
+    removePost(id: ID!): Post!
+    updatePost(id: ID!, data: UpdatePostInput!): Post!
+    addComment(data: AddCommentInput): Comment!
+    removeComment(id: ID!): Comment!
+    updateComment(id: ID!, data: UpdateCommentInput!): Comment!
+}
+
+type Subscription {
+    comment(post: ID!): CommentSubscription!
+    post: PostSubscription!
+}
+
+input UpdateUserInput {
+    name: String
+    email: String
+    age: Int
+}
+
+input AddUserInput {
+    name: String!
+    email: String!
+    age: Int
+}
+
+input UpdatePostInput {
+    title: String
+    body: String
+    published: Boolean
+}
+
+input AddPostInput {
+    title: String!
+    body: String!
+    published: Boolean!
+    author: ID!
+}
+
+input UpdateCommentInput {
+    text: String
+}
+
+input AddCommentInput {
+    text: String!
+    author: ID!
+    post: ID!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    age: Int
+    comments: [Comment!]!
+    posts: [Post!]!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    body: String!
+    published: Boolean!
+    author: User!
+    comments: [Comment!]!
+}
+
+type Comment {
+    id: ID!
+    text: String!
+    author: User!
+    post: Post!
+}
+
+type PostSubscription {
+    type: String!
+    data: Post!
+}
+
+type CommentSubscription {
+    type: String!
+    data: Comment!
+}
+
+enum MutationType {
+    NEW
+    REM
+    UP
+}
