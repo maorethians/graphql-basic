@@ -8,6 +8,7 @@ type Query {
 
 type Mutation {
     addUser(data: AddUserInput!): User!
+    login(data: LoginInput): User!
     removeUser(id: ID!): User!
     updateUser(id: ID!, data: UpdateUserInput!): User!
     addPost(data: AddPostInput): Post!
@@ -26,13 +27,17 @@ type Subscription {
 input UpdateUserInput {
     name: String
     email: String
-    age: Int
 }
 
 input AddUserInput {
     name: String!
     email: String!
-    age: Int
+    password: String!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
 }
 
 input UpdatePostInput {
@@ -62,7 +67,7 @@ type User {
     id: ID!
     name: String!
     email: String!
-    age: Int
+    password: String!
     comments: [Comment!]!
     posts: [Post!]!
 }
@@ -85,12 +90,12 @@ type Comment {
 
 type PostSubscription {
     type: String!
-    data: Post!
+    node: Post
 }
 
 type CommentSubscription {
     type: String!
-    data: Comment!
+    node: Comment
 }
 
 enum MutationType {

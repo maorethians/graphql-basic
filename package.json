@@ -13,8 +13,13 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babelcli": "0.0.2-security",
+    "bcrypt": "^3.0.6",
+    "graphql-cli": "^3.0.11",
     "graphql-yoga": "^1.14.10",
     "nodemon": "^1.18.10",
-    "uuid": "^3.3.2"
+    "prisma-binding": "^2.3.10"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0"
   }
 }

@@ -1,41 +1,42 @@
 const Query = {
     comments(parent, args, {db}, info) {
-        if (!args.query) {
-            return db.comments
-        } else {
-            return db.comments.filter((comment) => {
-                return comment.text.toLowerCase().includes(args.query.toLowerCase())
-            })
+        var constraints = {};
+        if (!args.query){
+            constraints.where = {
+                text_contains: args.query
+            }
         }
+        return db.query.comments(constraints, info)
     },
-    users(parent, args, {db, pubsub}, info) {
-        if (!args.query) {
-            pubsub.publish('count', {
-                count: 2,
-                count1: 3
-            });
-            return db.users
-        } else {
-            return db.users.filter((user) => {
-                return user.name.toLowerCase().includes(args.query.toLowerCase())
-            })
+    users(parent, args, {db}, info) {
+        let constraints = {};
+        if (args.query !== undefined) {
+            constraints.where = {
+                OR: [
+                    {
+                        name_contains: args.query
+                    }, {
+                        email_contains: args.query
+                    }
+                ]
+            }
         }
+        return db.query.users(constraints, info)
     },
     posts(parent, args, {db}, info) {
-        if (!args.query) {
-            return db.posts
-        } else {
-            return db.posts.filter((post) => {
-                return post.body.toLowerCase().includes(args.query.toLowerCase()) || post.title.toLowerCase().includes(args.query.toLowerCase())
-            })
+        let constraints = {};
+        if (args.query !== undefined) {
+            constraints.where = {
+                OR: [
+                    {
+                        title_contains: args.query
+                    }, {
+                        body_contains: args.query
+                    }
+                ]
+            }
         }
-    },
-    me() {
-        return {
-            id: '1A1730',
-            name: 'moein',
-            email: 'apaladian@gmail.com'
-        }
+        return db.query.posts(constraints, info)
     },
 };
 export {Query as default}
